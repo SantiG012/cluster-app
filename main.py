@@ -15,11 +15,27 @@ st.write(
     """
 )	
 
+st.write('El conjunto de datos tiene las siguientes columnas:')
+st.write(df.columns)
+
 st.title('Exploración de datos')
 st.write('Algunos gráficos para visualizar los datos. El proceso completo lo puede encontrar [aquí](https://colab.research.google.com/drive/1CceuYFzsgEIK9lRHF-XPzUAteXCwN_KK?usp=sharing).')
 
+st.title('Frecuencia de Compras vs Frecuencia de Compras de un solo pago')
 fig, ax = plt.subplots()
 
-df.hist(figsize=(50,50), ax=ax)
+df[['PURCHASES_FREQUENCY', 'ONEOFF_PURCHASES_FREQUENCY']].plot.scatter(x='PURCHASES_FREQUENCY', y='ONEOFF_PURCHASES_FREQUENCY', ax=ax)
+st.pyplot(fig=fig)
+
+st.title('Frecuencia de Compras vs Frecuencia de Compras a Plazos')
+fig, ax = plt.subplots()
+df[['PURCHASES_FREQUENCY', 'PURCHASES_INSTALLMENTS_FREQUENCY']].plot.scatter(x='PURCHASES_FREQUENCY', y='PURCHASES_INSTALLMENTS_FREQUENCY', ax=ax)
 
 st.pyplot(fig=fig)
+
+st.title('Porcentaje del Pago Total Pagado vs Frecuencia de Compras a Plazos')
+fig, ax = plt.subplots()
+df[['PRC_FULL_PAYMENT', 'PURCHASES_INSTALLMENTS_FREQUENCY']].plot.scatter(x='PRC_FULL_PAYMENT', y='PURCHASES_INSTALLMENTS_FREQUENCY', ax=ax)
+
+st.pyplot(fig=fig)
+         

@@ -16,17 +16,17 @@ def convert_uploaded_file(uploaded_file) -> pd.DataFrame:
         uploaded_df = pd.read_csv(uploaded_file)
         return uploaded_df
     except Exception as e:
-        raise ValueError(f"El archivo no es un CSV válido: {e}.")
+        raise TypeError(f"El archivo no es un CSV válido: {e}.")
 
 
 def validate(uploaded_df) -> None:
 
     for expected_column in expected_columns:
         if expected_column not in expected_df.columns:
-           raise ValueError(f"La columna {expected_column} no se encuentra en el dataset.")
+           raise KeyError(f"La columna {expected_column} no se encuentra en el dataset.")
     
     if len(uploaded_df.columns) != len(expected_columns):
-        raise ValueError("El dataset contiene columnas adicionales.")
+        raise KeyError("El dataset contiene columnas adicionales.")
     
     # Validate if all columns are numeric
     for column in uploaded_df.columns:
@@ -131,14 +131,24 @@ def plot_scatter_plot(df: pd.DataFrame) -> None:
             st.pyplot(fig)
 
 st.title("Clustering")
+st.markdown("""
+    **NOTA:** Ser ***PACIENTE*** con el tiempo de carga de los gráficos. El dataset es ***GRANDE***, los cálculos pueden tardar. Adicional a ello, el servidor host tiene ***LIMITACIONES*** de recursos.
+""")
 uploaded_file = st.file_uploader("Cargar archivo CSV", type=["csv"])
 
 if uploaded_file:
     try:
         uploaded_df = convert_uploaded_file(uploaded_file)
         validate(uploaded_df)
+    except TypeError as e:
+        error_message = e.args[0] if len(e.args) > 0 else "Error"
+        st.warning(f"{error_message} Por favor, suba un archivo CSV.")
+    except KeyError as e:
+        error_message = e.args[0] if len(e.args) > 0 else "Error"
+        st.warning(f"{error_message} Por favor, suba un que contenga cada una de las siguientes columnas: {','.join(expected_columns)}")
     except ValueError as e:
-        st.write(e)
+        error_message = e.args[0] if len(e.args) > 0 else "Error"
+        st.warning(f"{error_message} Todas las columnas deben ser numéricas")
     else:
         scaled_df = scale_features(uploaded_df)
         reduced_df = reduce_dimensionality(scaled_df)

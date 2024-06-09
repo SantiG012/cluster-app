@@ -14,10 +14,6 @@ st.markdown(f"""
 st.write(columns)
 
 st.markdown("""
-    3. Seleccionar el butón de **Analizar** para visualizar los resultados.
-    """)
-
-st.markdown("""
     **NOTAS**:
     """)
 st.markdown("""

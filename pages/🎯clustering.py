@@ -112,8 +112,8 @@ def plot_scatter_plot(df: pd.DataFrame) -> None:
     toggle_scatter = st.toggle("Ver Scatter Plot")
 
     if toggle_scatter:
-        column_a = st.selectbox("Seleccionar columna A", df.columns)
-        column_b = st.selectbox("Seleccionar columna B", df.columns)
+        column_a = st.selectbox("Seleccionar columna A", df.columns, index=7)
+        column_b = st.selectbox("Seleccionar columna B", df.columns, index=8)
 
         if column_a == column_b:
             st.warning("Seleccione columnas diferentes")

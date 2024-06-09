@@ -46,7 +46,7 @@ def reduce_dimensionality(df: pd.DataFrame) -> pd.DataFrame:
 
 def plot_elbow_curve(df: pd.DataFrame) -> None:
     global k
-    toggle_elbow = st.toggle("Ver codo del codo")
+    toggle_elbow = st.toggle("Gráfica del Codo (Métrica Whitin-Cluster Sum of Squares)", value=False)
     model = KMeans()
     wcss = []
 
